@@ -49,6 +49,9 @@ public class Heapfile {
             e.printStackTrace();
         }
     }
+    public LinkedList<ArrayList<String[]>> getHeap(){
+        return datastorage;
+    }
 
 /*    public String[] getTestRecord() {
         try {
@@ -61,10 +64,11 @@ public class Heapfile {
             e.printStackTrace();
         }
         return item;
-    }*/
+    }
 
     public static void main(String[] args) {
         Heapfile hf = new Heapfile();
     }
+    */
 }
 

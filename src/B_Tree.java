@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -18,14 +19,17 @@ public class B_Tree {
             //According to the heapfile, the last page is page 31207
             //Approximately 60 records in each page
             int[] testValue = {random.nextInt(31207),random.nextInt(60)};
-            test.keys.add(testValue);
+            ArrayList<int[]> buffer= new ArrayList<int[]>();
+            buffer.add(testValue);
+            test.keys.add(buffer);
+            buffer.clear();
         } else {
             System.out.println("According to simulate test, one node(4096 Byte) can have " + test.keys.size() + "key value pairs in it.");
             M = test.keys.size();
         }
     }
     private Node root;
-    public void add(int[] key) {
+    public void add(ArrayList<int[]> key) {
         if (root == null) {
             root = new Node(key);
             root.position = 0;
@@ -33,9 +37,8 @@ public class B_Tree {
         }
     }
 
-    public void add(Node node, int[] key) {
+    public void add(Node node, ArrayList<int[]> key) {
         if (node.keys.indexOf(key) != -1)
-            //if the key is already there...SO STH HAPPENDS
             return;
         //if the node is full, split it
         if (node.keys.size() >= (2 * B_Tree.M - 1)) {
@@ -65,12 +68,12 @@ public class B_Tree {
         int n3 = 2 * B_Tree.M - 1 - 1;
 
         Node fatherNode = node.father;
-        LinkedList<int[]> newNodeKeys = new LinkedList<>();
+        LinkedList<ArrayList<int[]>> newNodeKeys = new LinkedList<ArrayList<int[]>>();
         newNodeKeys.addAll(node.keys.subList(n2 + 1, n3 + 1));
         Node newNode = new Node(newNodeKeys);
         newNode.position = node.position + 1;
 
-        List<int[]> lists = new LinkedList<>();
+        List<ArrayList<int[]>> lists = new LinkedList<ArrayList<int[]>>();
         lists.addAll(node.keys.subList(0, n1 + 1));
 
         if (fatherNode == null) {
@@ -109,14 +112,12 @@ public class B_Tree {
         }
 
         node.keys.clear();
-        ;
         node.keys.addAll(lists);
-
         return split(fatherNode);
     }
 
     //the binary search
-    public int binarySearch(Node node, int[] key) {
+    public int binarySearch(Node node, ArrayList<int[]> key) {
         int index = 0;
 
         return index;
