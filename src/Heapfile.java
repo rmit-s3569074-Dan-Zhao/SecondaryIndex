@@ -9,9 +9,8 @@ public class Heapfile {
     ArrayList<String[]> Page;
     String[] item;
     BufferedReader reader;
-    long pageSize=0, allSize=0;
+    long pageSize = 0, allSize = 0;
 
-    // Ctrl + Alt + L    formating
     public Heapfile() {
         Page = new ArrayList<String[]>();
         try {
@@ -28,7 +27,7 @@ public class Heapfile {
                     Page.add(item);
                     //update page size
                     for (int i = 0; i < item.length; i++) {
-                        pageSize = pageSize + item[i].toString().length();
+                        pageSize = pageSize + item[i].toString().getBytes().length;
                     }
                     allSize = allSize + pageSize;
                     //read next record
@@ -42,7 +41,7 @@ public class Heapfile {
                     //clear the page buffer
                     Page.clear();
                     pageSize = 0;
-                    System.out.println("Number of pages for now："+datastorage.size());
+                    System.out.println("Number of pages for now：" + datastorage.size());
                 }
             }
             System.out.println("The final size is ：" + allSize);
@@ -50,6 +49,19 @@ public class Heapfile {
             e.printStackTrace();
         }
     }
+
+/*    public String[] getTestRecord() {
+        try {
+            reader = new BufferedReader(new FileReader("src/sample.csv"));
+            reader.readLine();
+            //the first line was column titles so skip first line
+            String line = reader.readLine();
+            item = line.split(",");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return item;
+    }*/
 
     public static void main(String[] args) {
         Heapfile hf = new Heapfile();
