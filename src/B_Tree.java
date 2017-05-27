@@ -12,33 +12,40 @@ public class B_Tree {
 
     private Node root;
 
-    public void add(int key) {
+    public void add(int[] key) {
         if (root == null) {
             root = new Node(key);
             root.position = 0;
             return;
         }
     }
+    public Node getRoot(){
+        return root;
+    }
 
-    public void add(Node node, int key) {
+    public void add(Node node, int[] key) {
         if (node.keys.indexOf(key) != -1)
-            //return;
+            return;
         //if the node is full, split it
-        if (node.keys.size() >= (2 * M - 1)) {
+        if (node.keys.size() >= M) {
             node = split(node);
         }
         if (node.children.size() > 0) {
             for (int i = 0; i < node.children.size(); i++) {
                 if (node.children.get(i) != null) {
                     add(node.children.get(i), key);
+                    System.out.println("New Node added");
                 } else {
                     node.keys.add(i, key);
+                    System.out.println("New Node added");
                 }
             }
         } else {
             for (int i = 0; i < node.keys.size(); i++) {
-                if (node.keys.get(i) == null)
+                if (node.keys.get(i) == null) {
                     node.keys.add(i, key);
+                    System.out.println("New Node added");
+                }
             }
         }
     }
@@ -54,12 +61,12 @@ public class B_Tree {
         int n3 = 2 * M - 1 - 1;
 
         Node fatherNode = node.father;
-        LinkedList<Integer> newNodeKeys = new LinkedList<Integer>();
+        LinkedList<int[]> newNodeKeys = new LinkedList<int[]>();
         newNodeKeys.addAll(node.keys.subList(n2 + 1, n3 + 1));
         Node newNode = new Node(newNodeKeys);
         newNode.position = node.position + 1;
 
-        List<Integer>lists = new LinkedList<Integer>();
+        List<int[]> lists = new LinkedList<int[]>();
         lists.addAll(node.keys.subList(0, n1 + 1));
 
         if (fatherNode == null) {
@@ -103,22 +110,21 @@ public class B_Tree {
     }
 
     //search by given Hourly_Counts,aka the ID of ArrayList with int arrays of locations
-    public ArrayList<Sting[]> searchNode(B_Tree index, int Hourly_Counts, int position) {
-        System.out.println("开始查找惹");
-        LinkedList<Integer> target = index.root.keys;
-        System.out.println("终于运行到这了!!!");
+    public int[] searchNode(B_Tree index, int Hourly_Counts, int position) {
+        System.out.println("Searching...");
+        LinkedList<int[]> target = index.root.keys;
         if (position == 0) {
             for (int i = 0; i < M; i++) {
-                if (target.get(i)!=null)
+                if (target.get(i)[0] == Hourly_Counts)
                     return target.get(i);
             }
         } else {
             for (int j = 0; j < M; j++) {
-                if (j + 1 == position || target.get(j)!=null)
+                if (j + 1 == position || j == Hourly_Counts)
                     return target.get(j);
             }
         }
-        return 0;
+        return null;
     }
 
     public int getPosition() {
