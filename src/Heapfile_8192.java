@@ -16,7 +16,7 @@ public class Heapfile_8192 {
         String line = null;
         try {
             //start to read the file
-            reader = new BufferedReader(new FileReader("src/test.csv"));
+            reader = new BufferedReader(new FileReader("src/2009.csv"));
             reader.readLine();
             //the first line was column titles so skip first line
             line = reader.readLine();
@@ -44,15 +44,14 @@ public class Heapfile_8192 {
             //when the page is full, put it in the heap
             else {
                 addPage(datastorage,Page);
-                System.out.println("There are " + Page.size() + " records in this page when it is full");
+                //System.out.println("There are " + Page.size() + " records in this page when it is full");
                 pageSize = 0;
-                System.out.println("Number of pages for now：" + datastorage.size());
+                //System.out.println("Number of pages for now：" + datastorage.size());
                 Page = new ArrayList<String[]>();
             }
         }
         System.out.println("The last page");
         addPage(datastorage,Page);
-        System.out.println("establishHeap test:"+datastorage.get(0).get(0)[0]);
         System.out.println("There are " + Page.size() + " records in this page when it is full");
         //clear the page buffer
         pageSize = 0;

@@ -13,8 +13,10 @@ public class queryEvaluate_4096 {
 
         Index4096 = new B_Tree_4096();
         heapfile4096 = new Heapfile_4096();
+        long startTime = System.currentTimeMillis();   //start time
         heapfile4096.establishHeap();
-        //save grouped data in Index4096
+        long endTime = System.currentTimeMillis(); //finish time
+        System.out.println("Establish time: " + (endTime - startTime) + "ms");
 
         int[] buffer = {Integer.parseInt(heapfile4096.getHeap().get(0).get(0)[9]), 0, 0};
         Index4096.add(buffer);
@@ -46,7 +48,7 @@ public class queryEvaluate_4096 {
             h = heapfile4096.getHeap().get(HCfound.get(k)[1]).get(HCfound.get(k)[2])[7];
             l = heapfile4096.getHeap().get(HCfound.get(k)[1]).get(HCfound.get(k)[2])[8];
             m = heapfile4096.getHeap().get(HCfound.get(k)[1]).get(HCfound.get(k)[2])[9];
-            System.out.println("终于你妈找见了：" + a + "," + b + "," + c + "," + d + "," + e + "," + f + "," + g + "," + h + "," + l + "," + m + "!!!");
+            //System.out.println("Found it：" + a + "," + b + "," + c + "," + d + "," + e + "," + f + "," + g + "," + h + "," + l + "," + m + "!!!");
         }
     }
 
