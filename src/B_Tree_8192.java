@@ -1,12 +1,11 @@
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Created by Administrator on 2017/5/26.
  */
-public class B_Tree {
-    public static Integer M = 4096;
+public class B_Tree_8192 {
+    public static Integer M = 8192;
     public int position;
 
     public Node root;
@@ -104,7 +103,7 @@ public class B_Tree {
     }
 
     //search by given Hourly_Counts
-    public LinkedList<int[]> searchNode(B_Tree index, int Hourly_Counts, int position) {
+    public LinkedList<int[]> searchNode(B_Tree_8192 index, int Hourly_Counts, int position) {
         System.out.println("Searching...");
         Node Entry = index.root;
         LinkedList<int[]> results = new LinkedList<int[]>();

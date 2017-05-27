@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 
-public class Heapfile {
+public class Heapfile_8192 {
     public LinkedList<ArrayList<String[]>> datastorage = new LinkedList<ArrayList<String[]>>();
     ArrayList<String[]> Page = new ArrayList<String[]>();
     ;
@@ -16,7 +16,7 @@ public class Heapfile {
         String line = null;
         try {
             //start to read the file
-            reader = new BufferedReader(new FileReader("src/sample.csv"));
+            reader = new BufferedReader(new FileReader("src/test.csv"));
             reader.readLine();
             //the first line was column titles so skip first line
             line = reader.readLine();
@@ -26,7 +26,7 @@ public class Heapfile {
         }
         //store the record in page if page is not full
         while (line != null) {
-            if (pageSize < 4096) {
+            if (pageSize < 8192) {
                 Page.add(item);
                 //update page size
                 for (int i = 0; i < item.length; i++) {
@@ -84,7 +84,7 @@ public class Heapfile {
 
     public static void main(String[] args) {
         try {
-            Heapfile hf = new Heapfile();
+            Heapfile_4096 heapfile4096 = new Heapfile_4096();
         } catch (Exception e) {
             e.printStackTrace();
         }
