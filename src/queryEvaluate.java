@@ -1,10 +1,12 @@
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
  * Created by Administrator on 2017/5/27.
  */
-public class queryEvaluate extends Heapfile{
+public class queryEvaluate extends Heapfile {
     B_Tree Index;
     Heapfile hf;
     LinkedList<ArrayList<int[]>> groupHC;
@@ -14,34 +16,40 @@ public class queryEvaluate extends Heapfile{
         Index = new B_Tree();
         hf = new Heapfile();
         hf.establishHeap();
-        groupHC = new LinkedList<ArrayList<int[]>>();
-        for (int i = 0; i < 12000; i++) {
-            ArrayList<int[]> buffer = new ArrayList<int[]>();
-            groupHC.add(buffer);
-        }
         //save grouped data in Index
-        Node root = new Node();
-        System.out.println("wtf怎么回事"+hf.getHeap().get(0).get(0)[0]);
+
         int[] buffer = {Integer.parseInt(hf.getHeap().get(0).get(0)[9]), 0, 0};
         Index.add(buffer);
         for (int i = 0; i < hf.getHeap().size(); i++) {
             for (int j = 0; j < hf.getHeap().get(i).size(); j++) {
                 //i is page number, j is line number
                 int[] bufferr = {Integer.parseInt(hf.getHeap().get(i).get(j)[9]), i, j};
-                Index.add(Index.getRoot(),bufferr);
+                Index.add(Index.root, bufferr);
             }
         }
         System.out.println("B-tree established");
+//        System.out.println("get root:"+Index.getRoot().keys.get()[0]+", root:"+Index.root.keys.get(1)[0]);
     }
 
     //the function to do the query
-    public ArrayList<String[]> findData(int Hourly_Counts) throws Exception{
-        int[] HCfound = Index.searchNode(Index, Hourly_Counts, Index.getPosition());
+    public void findData(int Hourly_Counts) throws Exception {
+        LinkedList<int[]> HCfound = Index.searchNode(Index, Hourly_Counts, Index.getPosition());
         ArrayList<String[]> record = null;
-        for (int i = 0; i < 3; i++) {
-            record.add(hf.getHeap().get(HCfound[1]).get(HCfound[2]));
+        System.out.println();
+        for (int k = 0; k < HCfound.size(); k++) {
+            String a, b, c, d, e, f, g, h, l, m;
+            a = hf.getHeap().get(HCfound.get(k)[1]).get(HCfound.get(k)[2])[0];
+            b = hf.getHeap().get(HCfound.get(k)[1]).get(HCfound.get(k)[2])[1];
+            c = hf.getHeap().get(HCfound.get(k)[1]).get(HCfound.get(k)[2])[2];
+            d = hf.getHeap().get(HCfound.get(k)[1]).get(HCfound.get(k)[2])[3];
+            e = hf.getHeap().get(HCfound.get(k)[1]).get(HCfound.get(k)[2])[4];
+            f = hf.getHeap().get(HCfound.get(k)[1]).get(HCfound.get(k)[2])[5];
+            g = hf.getHeap().get(HCfound.get(k)[1]).get(HCfound.get(k)[2])[6];
+            h = hf.getHeap().get(HCfound.get(k)[1]).get(HCfound.get(k)[2])[7];
+            l = hf.getHeap().get(HCfound.get(k)[1]).get(HCfound.get(k)[2])[8];
+            m = hf.getHeap().get(HCfound.get(k)[1]).get(HCfound.get(k)[2])[9];
+            System.out.println("终于你妈找见了：" + a + "," + b + "," + c + "," + d + "," + e + "," + f + "," + g + "," + h + "," + l + "," + m + "!!!");
         }
-        return record;
     }
 
     public B_Tree getIndex() {
@@ -52,19 +60,9 @@ public class queryEvaluate extends Heapfile{
         //Queries!! How exciting!!
         queryEvaluate qe = new queryEvaluate();
         long startTime = System.currentTimeMillis();   //start time
-        ArrayList<String[]> record = qe.findData(3);
+        qe.findData(3);
         long endTime = System.currentTimeMillis(); //finish time
         System.out.println("Time used: " + (endTime - startTime) + "ms");
-        for (int i = 0; i < record.size(); i++) {
-            System.out.print("Data number " + i + ":");
-            for (int j = 0; j < record.get(i).length; j++) {
-                System.out.print(record.get(i)[j]);
-            }
-            System.out.println();
-        }
-
-        System.out.println("求求你了运行起来千万别报错我愿意一年不出ssr");
-
     }
 
 }

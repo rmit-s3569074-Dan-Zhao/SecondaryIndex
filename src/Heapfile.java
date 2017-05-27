@@ -16,7 +16,7 @@ public class Heapfile {
         String line = null;
         try {
             //start to read the file
-            reader = new BufferedReader(new FileReader("src/test.csv"));
+            reader = new BufferedReader(new FileReader("src/sample.csv"));
             reader.readLine();
             //the first line was column titles so skip first line
             line = reader.readLine();
