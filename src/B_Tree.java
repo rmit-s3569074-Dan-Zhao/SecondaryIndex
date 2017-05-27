@@ -7,29 +7,12 @@ import java.util.Random;
  * Created by Administrator on 2017/5/26.
  */
 public class B_Tree {
-    Heapfile hf;
-    public static Integer M;
+    public static Integer M = 4096;
+    public int position;
 
-    public B_Tree(){
-        //using simulated data to test how many key value pairs can be stored in one node
-        Node test = new Node();
-        Random random = new Random();
-        if(test.sizeOfNode(test)<4096){
-            //testValue: page,line
-            //According to the heapfile, the last page is page 31207
-            //Approximately 60 records in each page
-            int[] testValue = {random.nextInt(31207),random.nextInt(60)};
-            ArrayList<int[]> buffer= new ArrayList<int[]>();
-            buffer.add(testValue);
-            test.keys.add(buffer);
-            buffer.clear();
-        } else {
-            System.out.println("According to simulate test, one node(4096 Byte) can have " + test.keys.size() + "key value pairs in it.");
-            M = test.keys.size();
-        }
-    }
     private Node root;
-    public void add(ArrayList<int[]> key) {
+
+    public void add(int key) {
         if (root == null) {
             root = new Node(key);
             root.position = 0;
@@ -37,43 +20,46 @@ public class B_Tree {
         }
     }
 
-    public void add(Node node, ArrayList<int[]> key) {
+    public void add(Node node, int key) {
         if (node.keys.indexOf(key) != -1)
-            return;
+            //return;
         //if the node is full, split it
-        if (node.keys.size() >= (2 * B_Tree.M - 1)) {
+        if (node.keys.size() >= (2 * M - 1)) {
             node = split(node);
         }
-        //use binary search to check the index of new node
-        int index = binarySearch(node, key);
-
         if (node.children.size() > 0) {
-            if (node.children.get(index) != null) {
-                add(node.children.get(index), key);
-            } else {
-                node.keys.add(index, key);
+            for (int i = 0; i < node.children.size(); i++) {
+                if (node.children.get(i) != null) {
+                    add(node.children.get(i), key);
+                } else {
+                    node.keys.add(i, key);
+                }
             }
         } else {
-            node.keys.add(index, key);
+            for (int i = 0; i < node.keys.size(); i++) {
+                if (node.keys.get(i) == null)
+                    node.keys.add(i, key);
+            }
         }
     }
 
     //分裂的方法！！
     public Node split(Node node) {
-        if (node.keys.size() < (2 * B_Tree.M - 1)) {
+        position++;
+        if (node.keys.size() < (2 * M - 1)) {
             return node;
         }
-        int n1 = B_Tree.M - 1 - 1;
+        int n1 = M - 1 - 1;
         int n2 = n1 + 1;
-        int n3 = 2 * B_Tree.M - 1 - 1;
+        int n3 = 2 * M - 1 - 1;
 
         Node fatherNode = node.father;
-        LinkedList<ArrayList<int[]>> newNodeKeys = new LinkedList<ArrayList<int[]>>();
+        LinkedList<Integer> newNodeKeys = new LinkedList<Integer>();
         newNodeKeys.addAll(node.keys.subList(n2 + 1, n3 + 1));
         Node newNode = new Node(newNodeKeys);
         newNode.position = node.position + 1;
 
-        List<ArrayList<int[]>> lists = new LinkedList<ArrayList<int[]>>();
+        List<Integer>lists = new LinkedList<Integer>();
         lists.addAll(node.keys.subList(0, n1 + 1));
 
         if (fatherNode == null) {
@@ -99,12 +85,12 @@ public class B_Tree {
             LinkedList<Node> newChildren = new LinkedList<Node>();
             LinkedList<Node> children = new LinkedList<Node>();
 
-            newChildren.addAll(node.children.subList(B_Tree.M, 2 * B_Tree.M));
+            newChildren.addAll(node.children.subList(M, 2 * M));
             for (int i = 0; i < newChildren.size() - 1; i++) {
                 newChildren.get(i).position = i;
                 newChildren.get(i).father = newNode;
             }
-            children.addAll(node.children.subList(0, B_Tree.M));
+            children.addAll(node.children.subList(0, M));
             newNode.children = newChildren;
             node.children.clear();
             ;
@@ -116,10 +102,26 @@ public class B_Tree {
         return split(fatherNode);
     }
 
-    //the binary search
-    public int binarySearch(Node node, ArrayList<int[]> key) {
-        int index = 0;
+    //search by given Hourly_Counts,aka the ID of ArrayList with int arrays of locations
+    public ArrayList<Sting[]> searchNode(B_Tree index, int Hourly_Counts, int position) {
+        System.out.println("开始查找惹");
+        LinkedList<Integer> target = index.root.keys;
+        System.out.println("终于运行到这了!!!");
+        if (position == 0) {
+            for (int i = 0; i < M; i++) {
+                if (target.get(i)!=null)
+                    return target.get(i);
+            }
+        } else {
+            for (int j = 0; j < M; j++) {
+                if (j + 1 == position || target.get(j)!=null)
+                    return target.get(j);
+            }
+        }
+        return 0;
+    }
 
-        return index;
+    public int getPosition() {
+        return position;
     }
 }
